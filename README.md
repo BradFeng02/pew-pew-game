@@ -12,7 +12,7 @@ Being overly ambitious, of course I had to try recreating what a professional ga
 For some reason, I also decided at the same time to learn some opengl. I wanted to move away from drawing pixels one by one in the framebuffer and start using shaders. At this point, using opengl made basically no difference.
 Anyways, I just couldn't get the physics to feel right.
 
-attempt 3 (current)
+attempt 3 (current):
 I decided that it wasn't viable for me to keep trying with the falling sand idea. I wanted to learn to use more of opengl too, when currently I was only using it to draw different colored pixels. Not really what it was meant to do.
 So I turned to Liquid Fun (and extension of box2d) and started from scratch. I slowly learned how to set up opengl, write simple shaders, and use box2d.I stopped working on the game suring the summer before my freshman year of college, but before that, I had a basic engine going. I had been playing with the water (which is so satisyfing), but also trying to get movement feeling right.
 I still have plans to merge the pixel world idea in though (when I get back into working on this game), again borrowing ideas from Noita.
