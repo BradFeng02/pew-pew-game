@@ -4,3 +4,6 @@ I was instantly hooked on that idea nd started researching it. I found some tech
 Being overly ambitious, of course I had to try recreating what a professional game dev team did in several years.
 For some reason, I also decided at the same time to learn some opengl. I wanted to move away from drawing pixels one by one in the framebuffer and start using shaders. At this point, using opengl made basically no difference.
 Anyways, I just couldn't get the physics to feel right.
+
+![recording](https://github.com/BradFeng02/pew-pew-game/raw/attempt-2/recordings/recording.gif)
+pretty ugly
