@@ -18,7 +18,7 @@ see attemp-2 branch for a gif
 
 attempt 3 (current):
 I decided that it wasn't viable for me to keep trying with the falling sand idea. I wanted to learn to use more of opengl too, when currently I was only using it to draw different colored pixels. Not really what it was meant to do.
-So I turned to Liquid Fun (and extension of box2d) and started from scratch. I slowly learned how to set up opengl, write simple shaders, and use box2d.I stopped working on the game suring the summer before my freshman year of college, but before that, I had a basic engine going. I had been playing with the water (which is so satisyfing), but also trying to get movement feeling right.
+So I turned to Liquid Fun (an extension of box2d) and started from scratch. I slowly learned how to set up opengl, write simple shaders, and use box2d.I stopped working on the game suring the summer before my freshman year of college, but before that, I had a basic engine going. I had been playing with the water (which is so satisyfing), but also trying to get movement feeling right.
 I still have plans to merge the pixel world idea in though (when I get back into working on this game), again borrowing ideas from Noita.
 
 i'm just dumping projects to github right now
