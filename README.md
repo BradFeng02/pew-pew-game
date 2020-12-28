@@ -1,4 +1,4 @@
-This all started maybe two years ago when I first picked up c++ and wanted to make a game. I had this idea of a game like terraria, but every block was a pixel. I also wanted to build as much stuff as possible from scratch, so no using unity or something. I thought it would be fun and help me learn.
+this started a little over a year ago when I wanted to make a game and practice c++. I had this idea of a game like terraria, but every block was a pixel. I also wanted to build as much stuff as possible from scratch, so no using unity or something. I thought it would be fun and help me learn.
 
 attempt 1:
 I discovered SDL and tried to use that. I stored my world in big vectors and drew everything using some paint pixel function. It was really slow.
