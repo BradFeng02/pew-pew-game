@@ -17,21 +17,74 @@ void ControllablePlayer::render()
 {
 	glUseProgram(solidboxshader);
 	glUniform3f(glGetUniformLocation(solidboxshader, "color"), 0.8f, 0.8f, 0.0f);
+	glBindVertexArray(capsulevao);
+	glBindBuffer(GL_ARRAY_BUFFER, capsulevbo);
+
+	GLfloat* coords = new GLfloat[4 * CAPSULE_PREC+4];
+	int i = 0;
+
+	b2PolygonShape* s = (b2PolygonShape*)body->GetFixtureList()->GetNext()->GetNext()->GetShape();
+	//cout << body->GetWorldPoint(s->GetVertex(2)).y << endl;
+	//coords where cy and cy start at 0 rads
+	float cx = s->GetVertex(2).x;
+	float cy = 0;
+	cout << cx << endl;
+	//diff btwn circle coords and world coords
+	float wdx = body->GetWorldPoint(s->GetVertex(2)).x-cx;
+	float wdy = body->GetWorldPoint(s->GetVertex(2)).y-cy;
+	float ogx = cx;
+	float ogy = cy;
+
+	coords[i++] = phys2glX(cx+wdx);
+	coords[i++] = phys2glY(cy+wdy);
+
+	coords[i++] = phys2glX(cx+wdx);
+	coords[i++] = phys2glY(cy+wdy-2*boxhalfhgt);
+
+	for (int a = 1; a < CAPSULE_PREC; ++a) {
+		float newcx = cosInc * cx - sinInc * cy;
+		cy = sinInc * cx + cosInc * cy;
+		cx = newcx;
+
+		coords[i++] = phys2glX(cx+wdx);
+		coords[i++] = phys2glY(cy+wdy);
+
+		coords[i++] = phys2glX(cx+wdx);
+		coords[i++] = phys2glY(-cy+wdy-2*boxhalfhgt);
+	}
+
+	coords[i++] = phys2glX(ogx+wdx-wid);
+	coords[i++] = phys2glY(ogy+wdy);
+
+	coords[i++] = phys2glX(ogx + wdx - wid);
+	coords[i++] = phys2glY(ogy + wdy - 2*boxhalfhgt);
+
+	glBufferData(GL_ARRAY_BUFFER, (4*CAPSULE_PREC+4)*sizeof(GLfloat),coords, GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * CAPSULE_PREC);
+
+	delete[] coords;
+
+	//glUseProgram(solidboxshader);
+	//glUniform3f(glGetUniformLocation(solidboxshader, "color"), 0.8f, 0.8f, 0.0f);
+	//glBindVertexArray(solidboxvao);
+	//glBindBuffer(GL_ARRAY_BUFFER, solidboxvbo);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, solidboxebo);
+	////
+	//b2PolygonShape* s = (b2PolygonShape*)body->GetFixtureList()->GetShape();
+	//float vertices[] = {
+	//	 phys2glX(body->GetWorldPoint(s->GetVertex(0)).x), phys2glY(body->GetWorldPoint(s->GetVertex(0)).y),
+	//	 phys2glX(body->GetWorldPoint(s->GetVertex(1)).x), phys2glY(body->GetWorldPoint(s->GetVertex(1)).y),
+	//	 phys2glX(body->GetWorldPoint(s->GetVertex(2)).x), phys2glY(body->GetWorldPoint(s->GetVertex(2)).y),
+	//	 phys2glX(body->GetWorldPoint(s->GetVertex(3)).x), phys2glY(body->GetWorldPoint(s->GetVertex(3)).y)
+	//};
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	/////////
+	/////////
 	glBindVertexArray(solidboxvao);
 	glBindBuffer(GL_ARRAY_BUFFER, solidboxvbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, solidboxebo);
-	//
-	b2PolygonShape* s = (b2PolygonShape*)body->GetFixtureList()->GetShape();
-	float vertices[] = {
-		 phys2glX(body->GetWorldPoint(s->GetVertex(0)).x), phys2glY(body->GetWorldPoint(s->GetVertex(0)).y),
-		 phys2glX(body->GetWorldPoint(s->GetVertex(1)).x), phys2glY(body->GetWorldPoint(s->GetVertex(1)).y),
-		 phys2glX(body->GetWorldPoint(s->GetVertex(2)).x), phys2glY(body->GetWorldPoint(s->GetVertex(2)).y),
-		 phys2glX(body->GetWorldPoint(s->GetVertex(3)).x), phys2glY(body->GetWorldPoint(s->GetVertex(3)).y)
-	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	/////////
-	/////////
 	glUniform3f(glGetUniformLocation(solidboxshader, "color"), 1.0f, 0.0f, 1.0f);
 	float v[] = {
 		phys2glX(ray2.x) + .001f, phys2glY(ray2.y),
@@ -40,7 +93,7 @@ void ControllablePlayer::render()
 		phys2glX(ray1.x) + .001f, phys2glY(ray1.y)
 	};
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(v), v, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(v), &v, GL_DYNAMIC_DRAW);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 }
@@ -107,7 +160,7 @@ void ControllablePlayer::jump_released()
 
 void ControllablePlayer::collideWith(Solid* t)
 {
-	cout << "CONTRollaable player class" << endl;
+	cout << "controllable player C/W solid" << endl;
 }
 
 void ControllablePlayer::stopmoving()

@@ -26,11 +26,13 @@ unsigned int gradientshader;
 unsigned int solidboxvao;
 unsigned int solidboxvbo;
 unsigned int solidboxebo;
+unsigned int capsulevao;
+unsigned int capsulevbo;
 unsigned int textshader;
 unsigned int textvao;
 unsigned int textvbo;
-unsigned int partvao;
-unsigned int partvbo;
+//unsigned int partvao;
+//unsigned int partvbo;
 std::unique_ptr<b2World> phys_world;
 b2ParticleSystem* part_sys;
 vector<Solid*> terrain;
@@ -137,7 +139,17 @@ void init_GLobjs() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		//font objs
+
+	//capsule (players)
+	glGenVertexArrays(1, &capsulevao);
+	glBindVertexArray(capsulevao);
+	glGenBuffers(1, &capsulevbo);
+	glBindBuffer(GL_ARRAY_BUFFER, capsulevbo);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0); //temp, can be combined w solidboxvao to make 2Dvao
+
+
+	//font objs
 	glGenVertexArrays(1, &textvao);
 	glBindVertexArray(textvao);
 	glGenBuffers(1, &textvbo);
@@ -147,15 +159,16 @@ void init_GLobjs() {
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	//particles
-	glGenVertexArrays(1, &partvao);
-	glBindVertexArray(partvao);
-	glGenBuffers(1, &partvbo);
-	glBindBuffer(GL_ARRAY_BUFFER, partvbo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+
+	//particles (liquid)
+	//glGenVertexArrays(1, &partvao);
+	//glBindVertexArray(partvao);
+	//glGenBuffers(1, &partvbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, partvbo);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindVertexArray(0);
 }
 void create_shader_program(const char* vertShaderSrc, const char* fragShaderSrc, unsigned int* shaderPrgm) {
 	int success;

@@ -8,6 +8,7 @@ Player::Player(float height, float width,float x0, float y0)
 	//id = PLAY;
 	hgt = height;
 	wid = width;
+	boxhalfhgt = (height - width) / 2.0f;
 	//x = x0;
 	//y = y0;
 
@@ -19,13 +20,34 @@ Player::Player(float height, float width,float x0, float y0)
 	bd.position.Set(x0, y0);
 	bd.fixedRotation = true;
 	body = phys_world->CreateBody(&bd);
+
+	//capsule
+	//box
 	b2PolygonShape box;
-	box.SetAsBox(width/2.0f, height/2.0f);
-	b2FixtureDef fd;
-	fd.shape = &box;
-	fd.density = 1000.0;
-	fd.friction = 0.3;
-	body->CreateFixture(&fd);
+	box.SetAsBox(width / 2.0f, boxhalfhgt);
+	b2FixtureDef boxfd;
+	boxfd.shape = &box;
+	boxfd.density = 1000.0;
+	boxfd.friction = 0.3;
+	body->CreateFixture(&boxfd);
+	//top circle
+	b2CircleShape top;
+	top.m_radius = width / 2.0f;
+	top.m_p.Set(0.0f, boxhalfhgt);
+	b2FixtureDef topfd;
+	topfd.shape = &top;
+	topfd.density = 1000.0f;
+	topfd.friction = 0.3f;
+	body->CreateFixture(&topfd);
+	//bot circle
+	b2CircleShape bot;
+	bot.m_radius = width / 2.0f;
+	bot.m_p.Set(0.0f, -boxhalfhgt);
+	b2FixtureDef botfd;
+	botfd.shape = &bot;
+	botfd.density = 1000.0f;
+	botfd.friction = 0.3f;
+	body->CreateFixture(&botfd);
 }
 
 void Player::render()

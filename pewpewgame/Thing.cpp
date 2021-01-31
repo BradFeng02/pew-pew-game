@@ -9,12 +9,12 @@ void Thing::act()
 
 void Thing::collideWith(Solid* t)
 {
-	std::cout << "base" << std::endl;
+	std::cout << "thing C/W solid" << std::endl;
 	return;
 }
 
 void Thing::collideWith(Player* t)
 {
-	std::cout << "base" << std::endl;
+	std::cout << "thing C/W player" << std::endl;
 	return;
 }

@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+/dependencies32.*
+/pewpewgame/dependencies32.*
+
 # User-specific files
 *.rsuser
 *.suo
@@ -338,3 +341,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/dependencies32/include

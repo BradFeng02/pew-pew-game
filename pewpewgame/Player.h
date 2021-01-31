@@ -5,7 +5,7 @@
 class Player :public Thing
 {
 protected:
-	float hgt, wid;// , x, y;
+	float hgt, wid, boxhalfhgt;// , x, y;
 	b2Body* body;
 public:
 	Player(float height,float width,float x0,float y0);

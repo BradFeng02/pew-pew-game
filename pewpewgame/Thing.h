@@ -11,7 +11,7 @@ enum thingtype {
 struct ThingRef
 {
 	thingtype id;
-	void* t;
+	void* t; //pointer to self, cast by physcontactlistener
 };
 
 class Thing

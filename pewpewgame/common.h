@@ -6,14 +6,22 @@ const int winWid = 1280;
 
 const double step = 1.0f / 60.0f;
 
-static const double DEGTORAD = 3.14159265358979323846 / 180.0;
-static const double RADTODEG = 180.0 / 3.14159265358979323846;
+static const double PI = 3.14159265358979323846;
+static const double DEGTORAD = PI / 180.0;
+static const double RADTODEG = 180.0 / PI;
+
+static const int CAPSULE_PREC = 30; //precision for semicircles
+static const float angInc = PI / static_cast<float>(CAPSULE_PREC);
+static const float cosInc = cos(angInc);
+static const float sinInc = sin(angInc);
 
 extern unsigned int solidboxshader;
 extern unsigned int gradientshader;
 extern unsigned int solidboxvao;
 extern unsigned int solidboxvbo;
 extern unsigned int solidboxebo;
+extern unsigned int capsulevao;
+extern unsigned int capsulevbo;
 extern unsigned int textshader;
 extern unsigned int textvao;
 extern unsigned int textvbo;
