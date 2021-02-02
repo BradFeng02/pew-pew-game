@@ -3,6 +3,7 @@
 #include "common.h"
 #include <glad\glad.h>
 #include <iostream>
+using namespace std;
 
 Solid::Solid(float height, float width, float x0, float y0,float angle) {
 	b2BodyDef bd;
@@ -10,13 +11,14 @@ Solid::Solid(float height, float width, float x0, float y0,float angle) {
 	bd.userData = &ref;
 	bd.type = b2_staticBody;
 	bd.position.Set(x0, y0);
-	bd.angle=float(angle*DEGTORAD);
+	bd.angle=float(angle);
 	Solid ground1();
 	body = phys_world->CreateBody(&bd);
 	//terrain.emplace_back(this);
 	b2PolygonShape box;
 	box.SetAsBox(width/2.0f, height/2.0f);
-	body->CreateFixture(&box, 0.0f);
+	body->CreateFixture(&box, 0.0f)->SetFriction(1.0f); //temp!!!
+	//cout << body->GetFixtureList()->GetFriction() << endl;
 }
 
 void Solid::render()
@@ -36,6 +38,14 @@ void Solid::render()
 	};
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+void Solid::collideWith(Player* t) {
+	cout << "solid C/W player" << endl;
+}
+
+void Solid::collideWith(Solid* t) {
+	cout << "solid C/W solid" << endl;
 }
 
 

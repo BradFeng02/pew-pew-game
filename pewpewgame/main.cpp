@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <thread>
 #include <Box2D/Box2D.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -16,6 +17,8 @@
 #include <string>
 #include "ControllablePlayer.h"
 #include "Solid.h"
+#include <mutex>
+#include <chrono>
 using namespace std;
 
 double frametime=1;
@@ -118,6 +121,8 @@ bool init_opengl() {
 	glViewport(0, 0, winWid, winHgt);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	//vsync
+	glfwSwapInterval(1);
 	//
 	return true;
 }
@@ -459,6 +464,36 @@ void render() {
 	glfwSwapBuffers(window);
 }
 
+//condition_variable framecv;
+//mutex framelock;
+//bool nextframe=false;
+//bool quit = false;
+//double minwait = 3;
+//auto waittime = chrono::microseconds(4000);
+//void timer() {
+//	double start = glfwGetTime();
+//	while (true) {
+//		//wait for game
+//		unique_lock<mutex> lock(framelock);
+//		while (nextframe) framecv.wait(lock);
+//		lock.unlock();
+//
+//		//sleep 60
+//		//double start = glfwGetTime();
+//		//this_thread::sleep_for(waittime);
+//		//this_thread::sleep_until(chrono::high_resolution_clock::now() + waittime);
+//		//if (glfwGetTime() - start > P_STEP) cout << "overslept" << endl;
+//		//while (glfwGetTime() - start < P_STEP);
+//		//start = glfwGetTime();
+//
+//		//notify game
+//		lock.lock();
+//		if (quit)return;
+//		nextframe = true;
+//		framecv.notify_all();
+//	}
+//}
+
 bool keystates[350] = { 0 };
 void processInput()
 {
@@ -531,7 +566,7 @@ int main() {
 	player = new ControllablePlayer(1.2f, 0.52f, -0.0f, 0.0f);
 	//Solid s1(.2f, 15.0f, 0.0f, -2.0f,0);
 	//terrain.emplace_back(&s1);
-	auto s1 = new Solid(.2f, 15.0f, 0.0f, -2.0f, 0);
+	auto s1 = new Solid(.2f, 7.0f, -3.5f, -2.0f, 0);
 	terrain.emplace_back(s1);
 	//Solid s2(3.0f, .2f, -5.0f, -.5f,0);
 	//terrain.emplace_back(&s2);
@@ -543,16 +578,27 @@ int main() {
 	terrain.emplace_back(s3);
 	//Solid s4(2.75f, .2f, -4.05f, -1.05f,45);
 	//terrain.emplace_back(&s4);
-	auto s4 = new Solid(2.75f, .2f, -4.05f, -1.05f, 45);
+	auto s4 = new Solid(2.75f, .2f, -4.05f, -1.05f, PI/4.0);
 	terrain.emplace_back(s4);
 
-	double starttime;
+	//auto s5 = new Solid(.2f, 7.0f, 3.5f, -1.9f, 0);
+	//terrain.emplace_back(s5);
+
+	for (double t = 0; t < PI/2.3; t += 0.05) {
+		auto* s = new Solid(.2f, 3.5f, sin(t)*6.0f, 4-cos(t)*6.0f, t);
+		terrain.emplace_back(s);
+	}
+
+	//60 fps timer thread
+	//thread timerthread(timer);
+
+	double start= glfwGetTime();
 	while (!glfwWindowShouldClose(window))
 	{
-		starttime = glfwGetTime();
+		
 		///
 		processInput();
-		player->act();
+		player->step();
 		if (sucking) {
 			glfwGetCursorPos(window, &mousex, &mousey);
 			//for (auto b : testboxes) {
@@ -584,7 +630,7 @@ int main() {
 			}
 		}
 		///
-		phys_world->Step(step, 6, 2); //BTW: dont use particle collisions for on hit effects. only use them for force and vfx
+		phys_world->Step(P_STEP, 6, 2); //BTW: dont use particle collisions for on hit effects. only use them for force and vfx
 		//for (Thing* b : physcontactlistener.zombies) {
 			//++testscore;
 			//testboxes.erase(remove(testboxes.begin(), testboxes.end(), b), testboxes.end());
@@ -599,11 +645,22 @@ int main() {
 		render();
 		///
 		//cout << (glfwGetTime() - starttime) * 1000 << endl;
-		while (glfwGetTime() - starttime < step);
-		frametime = glfwGetTime() - starttime;
+		//while (glfwGetTime() - starttime < P_STEP);
+		//frametime = glfwGetTime() - starttime;
+		//unique_lock<mutex> lock(framelock);
+		//while (!nextframe) framecv.wait(lock);
+		//nextframe = false;
+		//framecv.notify_all();
+		frametime = glfwGetTime() - start;
+		start = glfwGetTime();
+		///
 		glfwPollEvents();
 	}
 
+	//unique_lock<mutex> lock(framelock);
+	//quit = true;
+	//lock.unlock();
+	//timerthread.join();
 	glfwTerminate();
 	cout << "bye" << endl;
 	return 0;

@@ -3,7 +3,7 @@
 #include "Player.h"
 #include <iostream>
 
-void Thing::act()
+void Thing::step()
 {
 }
 

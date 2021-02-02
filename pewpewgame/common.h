@@ -4,7 +4,7 @@
 const int winHgt = 720;
 const int winWid = 1280;
 
-const double step = 1.0f / 60.0f;
+const double P_STEP = 1.0f / 60.0f;
 
 static const double PI = 3.14159265358979323846;
 static const double DEGTORAD = PI / 180.0;

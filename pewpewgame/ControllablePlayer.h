@@ -7,7 +7,8 @@ protected:
 public:
 	ControllablePlayer(float height, float width, float x0, float y0);
 	void render();
-	void act();
+	void drawRays();
+	void step();
 
 	void right_pressed();
 	void left_pressed();
@@ -19,13 +20,14 @@ public:
 	virtual void collideWith(Solid* t);
 private:
 	void stopmoving();
-	bool movingleft;
-	bool movingright;
+	bool movingleft, movingright;
 	int tright;
 	int tleft;
 
-	//temp
-	b2Vec2 ray1;
-	b2Vec2 ray2;
+	int raycnt = 2; // number of rays to check terrain angle per side (ex: 2 for 5 total  //|\\ )
+	float raylen = 0.1f;
+	b2Vec2* rays;
+
+	float dirx, diry;
 
 };

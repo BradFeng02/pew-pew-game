@@ -56,7 +56,7 @@
     <ClInclude Include="Thing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physraycallback.h">
+    <ClInclude Include="controllableplayerraycallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

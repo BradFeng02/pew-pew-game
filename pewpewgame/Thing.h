@@ -19,7 +19,7 @@ class Thing
 protected:
 	ThingRef ref;
 public:
-	virtual void act();
+	virtual void step();
 
 	virtual void collideWith(Solid* t);
 	virtual void collideWith(Player* t);

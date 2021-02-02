@@ -26,7 +26,10 @@ public:
                 return;
             case PLAY:
                 //cout << "soli x play" << endl;
-                static_cast<Solid*>(a->t)->collideWith(static_cast<Player*>(b->t));
+                //static_cast<Solid*>(a->t)->collideWith(static_cast<Player*>(b->t));
+
+                //want player to handle collisions with solid
+                static_cast<Player*>(b->t)->collideWith(static_cast<Solid*>(a->t));
                 return;
             }
             return;
@@ -46,7 +49,7 @@ public:
     }
 
     void EndContact(b2Contact* contact) {
-
+        cout << "contact ended" << endl;
         ////check if fixture A was a ball
         //void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
         //if (bodyUserData)
