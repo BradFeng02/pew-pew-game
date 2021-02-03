@@ -457,8 +457,8 @@ void render() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	RenderText(to_string(round(1 / frametime * 100.0) / 100.0).substr(0,4), fpsx, fpsy, fpsscale);
 	//
-	b2Vec2 dummytextpos(0, 0);
-	RenderText(to_string(testscore), dummytextpos.x * scale + winWid / 2.0f-10, dummytextpos.y* scale + winHgt / 2.0f+100, 0.5f);
+	RenderText(to_string(player->getBody()->GetLinearVelocity().Length()), 0, winHgt/2-20, 0.5f);
+	RenderText(to_string(player->isGrounded()), 0, winHgt / 2 + 20, 0.5f);
 	glDisable(GL_BLEND);
 	//
 	glfwSwapBuffers(window);
