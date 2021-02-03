@@ -311,7 +311,7 @@ void init_phys() {
 	part_sys = phys_world->CreateParticleSystem(&particleSystemDef);
 	part_sys->SetDestructionByAge(true);
 	part_sys->SetRadius(partrad);
-	part_sys->SetDensity(1000.0f);//1000
+	part_sys->SetDensity(100.0f);//100
 	phys_world->SetContactListener(&physcontactlistener);
 	//
 	makeTESTbodies();

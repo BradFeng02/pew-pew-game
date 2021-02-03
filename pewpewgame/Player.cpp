@@ -28,7 +28,7 @@ Player::Player(float height, float width,float x0, float y0)
 	box.SetAsBox(width / 2.0f, boxhalfhgt);
 	b2FixtureDef boxfd;
 	boxfd.shape = &box;
-	boxfd.density = 900.0f;
+	boxfd.density = 90.0f;
 	boxfd.friction = fric;
 	body->CreateFixture(&boxfd);
 	//top circle
@@ -37,7 +37,7 @@ Player::Player(float height, float width,float x0, float y0)
 	top.m_p.Set(0.0f, boxhalfhgt);
 	b2FixtureDef topfd;
 	topfd.shape = &top;
-	topfd.density = 450.0f;
+	topfd.density = 45.0f;
 	topfd.friction = fric;
 	body->CreateFixture(&topfd);
 	//bot circle
@@ -46,7 +46,7 @@ Player::Player(float height, float width,float x0, float y0)
 	bot.m_p.Set(0.0f, -boxhalfhgt);
 	b2FixtureDef botfd;
 	botfd.shape = &bot;
-	botfd.density = 450.0f;
+	botfd.density = 45.0f;
 	botfd.friction = fric;
 	body->CreateFixture(&botfd);
 }

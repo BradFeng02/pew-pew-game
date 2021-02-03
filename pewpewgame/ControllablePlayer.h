@@ -6,9 +6,15 @@ class ControllablePlayer :public Player
 {
 protected:
 	float maxspeed = 5.0f;
-	float maxaccel=70.0f;
+	float accelhi = 50.0f;
+	float accello = 20.0f;
+	float maxaccel=accelhi;
 	float turnrate = 10.0f;
-	int startrate = 7;
+	float jumppwr = 2.5f;
+	float floatpwr = 15.0f;
+	int startrate = 5;
+	float accelrate = 6.0f;
+	float airmult = 0.5f;
 public:
 	ControllablePlayer(float height, float width, float x0, float y0);
 	void render();
@@ -31,7 +37,7 @@ private:
 	int tright, tleft, tjump;
 
 	int raycnt = 2; // number of rays to check terrain angle per side (ex: 2 for 5 total  //|\\ )
-	float raylen = 0.1f;
+	float raylen = 0.05f;
 	b2Vec2* rays;
 	
 	float dirx, diry;

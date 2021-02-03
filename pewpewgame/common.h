@@ -32,7 +32,7 @@ const unsigned int boxindices[] = {
 1, 2, 3    // second triangle
 };
 
-const float scale = 70.0f; //each box2d meter is [scale] pixels
+const float scale = 40.0f; //each box2d meter is [scale] pixels
 extern std::unique_ptr<b2World> phys_world;
 extern b2ParticleSystem* part_sys;
 //extern std::vector<Solid*> terrain;

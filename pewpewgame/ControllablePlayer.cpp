@@ -159,7 +159,7 @@ void ControllablePlayer::getDirLeft(raycallback* cb) {
 	}
 	else {
 		//if still nothing, in air;
-		dirx = 0;
+		dirx = -1;
 		diry = 0;
 		grounded = false;
 	}
@@ -200,7 +200,7 @@ void ControllablePlayer::getDirRight(raycallback* cb) {
 	}
 	else {
 		//if still nothing, in air;
-		dirx = 0;
+		dirx = 1;
 		diry = 0;
 		grounded = false;
 	}
@@ -236,33 +236,77 @@ void ControllablePlayer::step()
 	//if both or none pressed
 	if (!(movingleft ^ movingright)) {
 		checkGrounded(&cb);
+		//maxaccel = grounded ? accelhi : accello;
 		tleft = 0;
 		tright = 0;
 
 		//stop moving
 		if (grounded) {
+			//jump up
+			if (jumping) {
+				if (tjump == 0) {
+					body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, jumppwr));
+					++tjump;
+				}
+			}
+			//stop moving
+			else {
+				float d = pow(speed, 3) / pow(maxspeed, 2);
+				float force = clamp(min(maxspeed + d + turnrate, maxspeed * speed) * startrate, 0.0f, maxaccel) * mass;
+				body->ApplyForceToCenter(b2Vec2(force * -vnormed.x, force * -vnormed.y), true);
+			}
+		}
+		else {
 			float d = pow(speed, 3) / pow(maxspeed, 2);
 			float force = clamp(min(maxspeed + d + turnrate, maxspeed * speed) * startrate, 0.0f, maxaccel) * mass;
-			body->ApplyForceToCenter(b2Vec2(force * -vnormed.x, force * -vnormed.y), true);
+			body->ApplyForceToCenter(b2Vec2(force * -vnormed.x, 0), true);
+		}
+
+		if (jumping&&tjump < 15) {
+			if (tjump>3) body->ApplyForceToCenter(b2Vec2(0, floatpwr * mass), true);
+			++tjump;
 		}
 	}
 	else if (movingleft) {
 		getDirLeft(&cb);
+		//maxaccel = grounded ? accelhi : accello;
 		if (tleft < 60)++tleft;
 
 		float d = pow(speed, 3) / pow(maxspeed, 2);
 		if (vnormed.x > 0)d = -d - turnrate;
-		float force = clamp((maxspeed - d) * (startrate + tleft / 2.0f), 0.0f, maxaccel) * mass;
+		float force = clamp((maxspeed - d) * (startrate + tleft / accelrate), 0.0f, maxaccel) * mass * (grounded ? 1 : airmult);
 		body->ApplyForceToCenter(b2Vec2(force * dirx, force * diry), true);
+
+		if (jumping) {
+			if (tjump == 0) {
+				body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, jumppwr));
+				++tjump;
+			}else if (tjump < 15) {
+				if (tjump > 3) body->ApplyForceToCenter(b2Vec2(0, floatpwr * mass), true);
+				++tjump;
+			}
+		}
 	}
 	else if (movingright) {
 		getDirRight(&cb);
+		//maxaccel = grounded ? accelhi : accello;
 		if (tright < 60)++tright;
 
 		float d = pow(speed, 3) / pow(maxspeed, 2);
 		if (vnormed.x < 0)d = -d - turnrate;
-		float force = clamp((maxspeed - d) * (startrate + tright / 2.0f), 0.0f, maxaccel) * mass;
+		float force = clamp((maxspeed - d) * (startrate + tright / accelrate), 0.0f, maxaccel) * mass * (grounded ? 1 : airmult);
 		body->ApplyForceToCenter(b2Vec2(force * dirx, force * diry), true);
+
+		if (jumping) {
+			if (tjump == 0) {
+				body->SetLinearVelocity(b2Vec2(body->GetLinearVelocity().x, jumppwr));
+				++tjump;
+			}
+			else if (tjump < 15) {
+				if (tjump > 3) body->ApplyForceToCenter(b2Vec2(0, floatpwr * mass), true);
+				++tjump;
+			}
+		}
 	}
 
 	//b2Vec2 vel = body->GetLinearVelocity();
